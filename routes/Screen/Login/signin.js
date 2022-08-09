@@ -34,23 +34,19 @@ const LoginScreen = ({navigation}) => {
       return;
     }
     setLoading(true);
-    let dataToSend = {email: userEmail, password: userPassword};
-    let formBody = [];
-    for (let key in dataToSend) {
-      let encodedKey = encodeURIComponent(key);
-      let encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
- 
+    let Data = JSON.stringify({
+      userid : userEmail,
+      pw : userPassword
+    });
+    console.log(Data);
     fetch('http://localhost:8000/users/signin', {
       method: 'POST',
-      body: formBody,
+      body: Data,
       headers: {
         //Header Defination
-        'Content-Type':
-        'application/x-www-form-urlencoded;charset=UTF-8',
+        'Content-Type':'application/json',
       },
+      json: true,
     })
       .then((response) => response.json())
       .then((responseJson) => {
@@ -59,9 +55,8 @@ const LoginScreen = ({navigation}) => {
         console.log(responseJson);
         // If server response message same as Data Matched
         if (responseJson.status === 201) {
-          AsyncStorage.setItem('user_id', responseJson.session.email);
-          console.log(responseJson.session.email);
-          navigation.replace('DrawerNavigationRoutes');
+          AsyncStorage.setItem('email', responseJson.session);
+          navigation.replace('Main');
         } else {
           setErrortext(responseJson.msg);
           console.log('Please check your email id or password');
@@ -146,7 +141,7 @@ const LoginScreen = ({navigation}) => {
             </TouchableOpacity>
             <Text
               style={styles.registerTextStyle}
-              onPress={() => navigation.navigate('RegisterScreen')}>
+              onPress={() => navigation.navigate('Signup')}>
               New Here ? Register
             </Text>
           </KeyboardAvoidingView>

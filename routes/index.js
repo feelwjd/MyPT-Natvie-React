@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Signin from "./Screen/Login/signin";
 import Signup from "./Screen/Login/signup";
@@ -11,17 +12,17 @@ import SplashScreen from "./Screen/splashScreen";
 
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const Auth = () => {
     return (
-      <Stack.Navigator initialRouteName='Signin'>
+      <Stack.Navigator initialRouteName="Signin">
         <Stack.Screen
           name="Signin"
           component={Signin}
           options={{
             title: '',
             headerBackTitleVisible: false,
-            headerBackImage: BackBtn,
           }}
         />
         <Stack.Screen
@@ -30,7 +31,6 @@ const Auth = () => {
           options={{
             title: '',
             headerBackTitleVisible: false,
-            headerBackImage: BackBtn,
           }}
         />
       </Stack.Navigator>
@@ -46,7 +46,6 @@ const Main = () => {
           options={{
             title: '',
             headerBackTitleVisible: false,
-            headerBackImage: BackBtn,
           }}
         />
         <Stack.Screen
@@ -55,7 +54,6 @@ const Main = () => {
           options={{
             title: '',
             headerBackTitleVisible: false,
-            headerBackImage: BackBtn,
           }}
         />
         <Stack.Screen
@@ -64,7 +62,6 @@ const Main = () => {
           options={{
             title: '',
             headerBackTitleVisible: false,
-            headerBackImage: BackBtn,
           }}
         />
         <Stack.Screen
@@ -73,7 +70,6 @@ const Main = () => {
           options={{
             title: '',
             headerBackTitleVisible: false,
-            headerBackImage: BackBtn,
           }}
         />
       </Stack.Navigator>

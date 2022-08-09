@@ -5,27 +5,50 @@ import {
   StyleSheet,
   Image
 } from 'react-native';
- 
 import AsyncStorage from '@react-native-async-storage/async-storage';
- 
+import ServerConnect from "../module/ServerConnect"
+
 const SplashScreen = ({navigation}) => {
   //State for ActivityIndicator animation
   const [animating, setAnimating] = useState(true);
- 
   useEffect(() => {
     setTimeout(() => {
       setAnimating(false);
       //Check if user_id is set or not
       //If not then send for Authentication
       //else send to Home Screen
-      AsyncStorage.getItem('email').then((value) =>
+      let value = AsyncStorage.getItem('email')
+      console.log(value);
+      if(value === null){
         navigation.replace(
-          value === null ? 'Auth' : 'Main'
-        ),
-      );
-    }, 5000);
+          value === null||value === 'undefined' ? 'Auth' : 'Main'
+        );
+      }else{
+        ServerConnect('api/SessionCheck',{'cookie':value} ,function(err, result){
+          if (err){
+            console.log(err);
+            AsyncStorage.clear();
+            navigation.replace(
+              value === null||value === 'undefined' ? 'Auth' : 'Main'
+            );
+          }else{
+            if(result.status === 201){
+              navigation.replace(
+                value === null||value === 'undefined' ? 'Auth' : 'Main'
+              );
+            }else{
+              console.log(result.msg);
+              AsyncStorage.clear();
+              navigation.replace(
+                value === null||value === 'undefined' ? 'Auth' : 'Main'
+              );
+            }
+          }
+        });
+      }
+    }, 1000);
   }, []);
- 
+
   return (
     <View style={styles.container}>
       <Image
