@@ -17,35 +17,25 @@ const SplashScreen = ({navigation}) => {
       //Check if user_id is set or not
       //If not then send for Authentication
       //else send to Home Screen
-      let value = AsyncStorage.getItem('email')
-      console.log(value);
-      if(value === null){
-        navigation.replace(
-          value === null||value === 'undefined' ? 'Auth' : 'Main'
-        );
-      }else{
-        ServerConnect('api/SessionCheck',{'cookie':value} ,function(err, result){
+      let value = AsyncStorage.getItem('email').then(async function(value){
+        console.log(value);
+        ServerConnect('api/SessionCheck',{'cookie':value} ,async function(err, result){
           if (err){
             console.log(err);
-            AsyncStorage.clear();
-            navigation.replace(
-              value === null||value === 'undefined' ? 'Auth' : 'Main'
-            );
+            await AsyncStorage.clear();
           }else{
             if(result.status === 201){
-              navigation.replace(
-                value === null||value === 'undefined' ? 'Auth' : 'Main'
-              );
+              console.log("세션 확인 되었습니다.")
             }else{
               console.log(result.msg);
-              AsyncStorage.clear();
-              navigation.replace(
-                value === null||value === 'undefined' ? 'Auth' : 'Main'
-              );
+              await AsyncStorage.clear();
             }
           }
         });
-      }
+        navigation.replace(
+          value === null ? 'Auth' : 'Main'
+        );
+      });
     }, 1000);
   }, []);
 
