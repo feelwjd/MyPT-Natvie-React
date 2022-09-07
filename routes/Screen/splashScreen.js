@@ -17,7 +17,7 @@ const SplashScreen = ({navigation}) => {
       //Check if user_id is set or not
       //If not then send for Authentication
       //else send to Home Screen
-      let value = AsyncStorage.getItem('email').then(async function(value){
+      AsyncStorage.getItem('email').then(async function(value){
         console.log(value);
         ServerConnect('api/SessionCheck',{'cookie':value} ,async function(err, result){
           if (err){
@@ -27,6 +27,7 @@ const SplashScreen = ({navigation}) => {
             if(result.status === 201){
               console.log("세션 확인 되었습니다.")
             }else{
+              console.log(result.status);
               console.log(result.msg);
               await AsyncStorage.clear();
             }

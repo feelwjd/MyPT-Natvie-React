@@ -10,10 +10,7 @@ function ServerConnect(path, data){
     })
     .then((response) => response.json())
     .then((responseJson) => {
-    //Hide Loader
-    //setLoading(false);
     console.log(responseJson);
-    // If server response message same as Data Matched
     return responseJson;
     })
 }
